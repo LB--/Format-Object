@@ -1,0 +1,608 @@
+{
+	"About":
+	{
+		"Name": "Format Object",
+		"Author": "LB",
+		"Copyright": "Copyright © 2012 LB-Stuff",
+		"Comment": "The Format Object does not format hard drives. Instead it is much more useful in the sense that it allows you to define customized file formats, and then use them to save and load information in any format.\n\nThanks goes to mojofltr for the excellent icon.",
+		"URL": "http://www.LB-Stuff.com/",
+		"Help": "Help/Format Object/Format Object.chm",
+		"Identifier": "FMTO",
+	},
+
+	"ActionMenu":
+	[
+		"Separator",
+		[0, "Create Format"],
+		"Separator",
+		[1, "Save Format"],
+		[2, "Load Format"],
+		"Separator",
+		["Add to format",
+			[3, "Add Sub-Format"],
+			"Separator",
+			[4, "Add Byte"],
+			[5, "Add Short"],
+			[6, "Add Integer"],
+			[7, "Add Long"],
+			[8, "Add Float"],
+			[9, "Add Double"],
+			[10,"Add String"],
+			[22,"Add Raw Data"],
+		],
+		"Separator",
+		[11,"Save &Using Format"],
+		[12,"Load &Using Format"],
+		"Separator",
+		["When saving",
+			[13,"Set number of times to loop Sub-Format"],
+			[14,"Set Byte Value"],
+			[15,"Set Short Value"],
+			[16,"Set Integer Value"],
+			[17,"Set Long Value"],
+			[18,"Set Float Value"],
+			[19,"Set Double Value"],
+			[20,"Set String Value"],
+			[23,"Set size of Raw Data"],
+		],
+		["When loading",
+			[13,"Set number of times to loop Sub-Format"],
+			[21,"Set size of string to read"],
+			[23,"Set size of Raw Data"],
+		],
+		"Separator",
+	],
+	"ConditionMenu":
+	[
+		"Separator",
+		[0, "On Error"],
+		"Separator",
+		["On saving",
+			[1, "On Sub-Format"],
+			[2, "On Byte"],
+			[3, "On Short"],
+			[4, "On Integer"],
+			[5, "On Long"],
+			[6, "On Float"],
+			[7, "On Double"],
+			[8, "On String"],
+			[19,"On Raw Data"],
+			"Separator",
+			[9, "Is Saving?"],
+		],
+		["On loading",
+			[10,"On Sub-Format"],
+			[11,"On Byte"],
+			[12,"On Short"],
+			[13,"On Integer"],
+			[14,"On Long"],
+			[15,"On Float"],
+			[16,"On Double"],
+			[17,"On String"],
+			[20,"On Raw Data"],
+			"Separator",
+			[18,"Is Loading?"],
+		],
+	],
+	"ExpressionMenu":
+	[
+		"Separator",
+		[0, "Get Last Error"],
+		"Separator",
+		[1, "Get Parent Format Loop Index"],
+		["Get Byte",
+			[2, "Signed"],
+			[3, "Unsigned"],
+		],
+		["Get Short",
+			[4, "Signed"],
+			[5, "Unsigned"],
+		],
+		["Get Integer",
+			[6, "Signed"],
+			[7, "Unsigned (as string)"],
+		],
+		["Get Long",
+			[8, "Signed (as string)"],
+			[9, "Unsigned (as string)"],
+		],
+		[10,"Get Float"],
+		[11,"Get Double (as string)"],
+		[12,"Get String"],
+		[13,"Get Raw Data Memory Address"],
+		[14,"Get Raw Data Size"],
+		"Separator",
+	],
+
+	"Actions":
+	[
+		{	"Title": "Create Format %0",
+
+			"Parameters":
+			[
+				["Text", "Format Name"],
+			],
+		},
+		{	"Title": "Save Format %0 to File %1",
+
+			"Parameters":
+			[
+				["Text", "Format Name"],
+				["File", "Filename"],
+			],
+		},
+		{	"Title": "Load File %0 into Format %1",
+
+			"Parameters":
+			[
+				["File", "Filename"],
+				["Text", "Format Name"],
+			],
+		},
+		{	"Title": "Add Sub Format %0 to last format",
+
+			"Parameters":
+			[
+				["Text", "Format Name"],
+			],
+		},
+		{	"Title": "Add Byte %0 to last format",
+
+			"Parameters":
+			[
+				["Text", "Byte Name"],
+			],
+		},
+		{	"Title": "Add Short %0 to last format",
+
+			"Parameters":
+			[
+				["Text", "Short Name"],
+			],
+		},
+		{	"Title": "Add Int %0 to last format",
+
+			"Parameters":
+			[
+				["Text", "Int Name"],
+			],
+		},
+		{	"Title": "Add Long %0 to last format",
+
+			"Parameters":
+			[
+				["Text", "Long Name"],
+			],
+		},
+		{	"Title": "Add Float %0 to last format",
+
+			"Parameters":
+			[
+				["Text", "Float Name"],
+			],
+		},
+		{	"Title": "Add Double %0 to last format",
+
+			"Parameters":
+			[
+				["Text", "Double Name"],
+			],
+		},
+		{	"Title": "Add String %0 to last format",
+
+			"Parameters":
+			[
+				["Text", "String Name"],
+			],
+		},
+		{	"Title": "Save File %1 using Format %0",
+
+			"Parameters":
+			[
+				["Text", "Name of Format to Save with"],
+				["File", "File to Save to"],
+			],
+		},
+		{	"Title": "Load File %0 using Format %1",
+
+			"Parameters":
+			[
+				["File", "File to Load from"],
+				["Text", "Name of Format to Load with"],
+			],
+		},
+		{	"Title": "Set number of times to loop this Sub-Format to %0",
+
+			"Parameters":
+			[
+				["Integer", "Number of times to loop this Sub-Format"],
+			],
+		},
+		{	"Title": "Set Byte to %0",
+
+			"Parameters":
+			[
+				["Integer", "Byte Value"],
+			],
+		},
+		{	"Title": "Set Short to %0",
+
+			"Parameters":
+			[
+				["Integer", "Short Value"],
+			],
+		},
+		{	"Title": "Set Integer to %0",
+
+			"Parameters":
+			[
+				["Integer", "Integer Value"],
+			],
+		},
+		{	"Title": "Set Long to %0",
+
+			"Parameters":
+			[
+				["Text", "Long Value (as string)"],
+			],
+		},
+		{	"Title": "Set Float to %0",
+
+			"Parameters":
+			[
+				["Float", "Float Value"],
+			],
+		},
+		{	"Title": "Set Double to %0",
+
+			"Parameters":
+			[
+				["Text", "Double Value (as string)"],
+			],
+		},
+		{	"Title": "Set String to %0 (no null terminator: %1)",
+
+			"Parameters":
+			[
+				["Text", "String Value"],
+				["Integer", "Don't null terminate? (0 for null terminator, 1 for no null terminator)"],
+			],
+		},
+		{	"Title": "Set String Size to %0",
+
+			"Parameters":
+			[
+				["Integer", "Size of String to Read"],
+			],
+		},
+		{	"Title": "Add Raw Data %0 to last format",
+
+			"Parameters":
+			[
+				["Text", "Raw Data Name"],
+			],
+		},
+		{	"Title": "Set Raw Data Size to %0 bytes",
+
+			"Parameters":
+			[
+				["Integer", "Size in Bytes of Raw Data"],
+			],
+		},
+	],
+	"Conditions":
+	[
+		{	"Title": "%o: On Error",
+
+			"Parameters":
+			[
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "S%o: F%0->SF%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Sub-Format"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "S%o: F%0->B%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Byte"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "S%o: F%0->S%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Short"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "S%o: F%0->I%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Integer"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "S%o: F%0->L%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Long"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "S%o: F%0->F%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Float"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "S%o: F%0->D%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Double"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "S%o: F%0->$%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this String"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "Saving with a %o?",
+
+			"Parameters":
+			[
+			],
+
+			"Triggered": false
+		},
+		{	"Title": "L%o: F%0->SF%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Sub-Format"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "L%o: F%0->B%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Byte"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "L%o: F%0->S%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Short"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "L%o: F%0->I%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Integer"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "L%o: F%0->L%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Long"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "L%o: F%0->F%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Float"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "L%o: F%0->D%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Double"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "L%o: F%0->$%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this String"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "Loading with a %o?",
+
+			"Parameters":
+			[
+			],
+
+			"Triggered": false
+		},
+		{	"Title": "S%o: F%0->R%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Raw Data"],
+			],
+
+			"Triggered": true
+		},
+		{	"Title": "L%o: F%0->R%1",
+
+			"Parameters":
+			[
+				["Text", "Name of Parent Format"],
+				["Text", "Name of this Raw Data"],
+			],
+
+			"Triggered": true
+		},
+	],
+	"Expressions":
+	[
+		{	"Title": "Get Error$(",
+			"Returns": "Text",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get PFLI(",
+			"Returns": "Integer",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get SByte(",
+			"Returns": "Integer",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get UByte(",
+			"Returns": "Integer",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get SShort(",
+			"Returns": "Integer",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get UShort(",
+			"Returns": "Integer",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get SInt(",
+			"Returns": "Integer",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get UInt$(",
+			"Returns": "Text",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get SLong$(",
+			"Returns": "Text",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get ULong$(",
+			"Returns": "Text",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get Float(",
+			"Returns": "Float",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get Double$(",
+			"Returns": "Text",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get String$(",
+			"Returns": "Text",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get Raw Address(",
+			"Returns": "Integer",
+
+			"Parameters":
+			[
+			],
+		},
+		{	"Title": "Get Raw Size(",
+			"Returns": "Integer",
+
+			"Parameters":
+			[
+			],
+		},
+	],
+}
