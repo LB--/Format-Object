@@ -55,7 +55,7 @@ const Char *Extension::GetString()
 	{
 		if(NullT)
 		{
-			std::getline(*lfrom, StrValue, '\0');
+			std::getline(*lfrom, StrValue, _T('\0'));
 		}
 		else
 		{
@@ -72,7 +72,7 @@ int Extension::GetRawMemAddr()
 {
 	if(!rawdata)
 	{
-		rawdata = new char[rawsize];
+		rawdata = new Char[rawsize];
 		if(lfrom)
 		{
 			lfrom->read(rawdata, rawsize);

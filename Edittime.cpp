@@ -57,7 +57,7 @@ LPVOID WINAPI DLLExport GetPropValue(LPMV mV, LPEDATA edPtr, UINT nPropID)
 	switch(nPropID)
 	{
 	case Prop::Version:
-		return new CPropDataValue("Release 1");
+		return new CPropDataValue("Release 2");
 	}
 #endif
 	return NULL;
@@ -106,19 +106,19 @@ BOOL WINAPI DLLExport EditProp(LPMV mV, LPEDATA edPtr, UINT nPropID)
 		{
 			String msgs[] =
 			{
-				TS"With the Format Object, you can create customized formats for any task and then use those formats to save and load files.",
-				TS"To start, you need to create all the formats you will need in reverse order.\r\nFor example, if format A constains an integer, format B, and a string, you would need to create format B first, so that you can later add it into format A.",
-				TS"The 'add' actions affect the last format you created, which is why you need to create the format in reverse order. Once you've added a format into another, you no longer need the one you added.",
-				TS"This means you only need to save the final resulting format to a format file to load it and use it - the other formats you made were just placeholders.",
-				TS"Saving and Loading using Formats should be almost intuitive; just remember that unless you specify otherwise, strings will be loaded with null terminators.\r\nYou must specify a size BEFORE using the expression to get the string.",
-				TS"Some number types have to be dealt with as strings due to technical limitations in either MMF2 itself or the way MMF2 communicates with extensions.\r\nFor example, MMF2 internally uses 64-bit double precision floats, but it can only transmit 32-bit floats to/from extensions.",
-				TS"The Raw Data type is meant for useage with the Memory Object and other objects which give/take memory addresses for their operations.\r\nYou should set the size of the Raw Data BEFORE using the expression to get its memory address.",
-				TS"I hope this explains enough - if you need more information feel free to post and ask.",
-				TS""
+				_T("With the Format Object, you can create customized formats for any task and then use those formats to save and load files."),
+				_T("To start, you need to create all the formats you will need in reverse order.\r\nFor example, if format A constains an integer, format B, and a string, you would need to create format B first, so that you can later add it into format A."),
+				_T("The 'add' actions affect the last format you created, which is why you need to create the format in reverse order. Once you've added a format into another, you no longer need the one you added."),
+				_T("This means you only need to save the final resulting format to a format file to load it and use it - the other formats you made were just placeholders."),
+				_T("Saving and Loading using Formats should be almost intuitive; just remember that unless you specify otherwise, strings will be loaded with null terminators.\r\nYou must specify a size BEFORE using the expression to get the string."),
+				_T("Some number types have to be dealt with as strings due to technical limitations in either MMF2 itself or the way MMF2 communicates with extensions.\r\nFor example, MMF2 internally uses 64-bit double precision floats, but it can only transmit 32-bit floats to/from extensions."),
+				_T("The Raw Data type is meant for useage with the Memory Object and other objects which give/take memory addresses for their operations.\r\nYou should set the size of the Raw Data BEFORE using the expression to get its memory address."),
+				_T("I hope this explains enough - if you need more information feel free to post and ask."),
+				_T("")
 			};
 			for(unsigned i = 0; msgs[i].length(); ++i)
 			{
-				MessageBox(mV->mvHEditWin, msgs[i].c_str(), TS"Help", MB_OK);
+				MessageBox(mV->mvHEditWin, msgs[i].c_str(), _T("Help"), MB_OK);
 			}
 		}
 		break;

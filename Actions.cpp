@@ -9,44 +9,44 @@ void Extension::CreateFormat(const Char *Name)
 	}
 	Formats.push_back(new Format::ItemGroup(Name));
 }
-static const String ID (TS"Format");
+static const String ID (_T("Format"));
 static const unsigned FileVersion (0);
 void Extension::SaveFormat(const Char *Name, const Char *File)
 {
 	Formats_t::iterator it = FindFormat(Name);
-	if(!Assert(it != Formats.end(), String(TS"No such format: ")+Name)) return;
-	std::ofstream f (File, std::ios::out|std::ios::binary|std::ios::trunc);
-	if(!Assert(f.is_open(), String(TS"Failed to open: ")+File)) return;
-	(*it)->Serialize((f << ID << char(FileVersion), f));
+	if(!Assert(it != Formats.end(), String(_T("No such format: "))+Name)) return;
+	std::basic_ofstream<Char> f (File, std::ios::out|std::ios::binary|std::ios::trunc);
+	if(!Assert(f.is_open(), String(_T("Failed to open: "))+File)) return;
+	(*it)->Serialize((f << ID << Char(FileVersion), f));
 }
 void Extension::LoadFormat(const Char *File, const Char *Name)
 {
 	Formats_t::iterator it = FindFormat(Name);
-	if(!Assert(it == Formats.end(), String(TS"Format already exists: ")+Name)) return;
-	std::ifstream f (File, std::ios::in|std::ios::binary);
-	if(!Assert(f.is_open(), String(TS"Failed to open: ")+File)) return;
-	char id[7] = {0};
+	if(!Assert(it == Formats.end(), String(_T("Format already exists: "))+Name)) return;
+	std::basic_ifstream<Char> f (File, std::ios::in|std::ios::binary);
+	if(!Assert(f.is_open(), String(_T("Failed to open: "))+File)) return;
+	Char id[7] = {0};
 	f.read(id, 6);
-	if(!Assert(id == ID, String(TS"Not a valid format file: ")+File)) return;
+	if(!Assert(id == ID, String(_T("Not a valid format file: "))+File)) return;
 	unsigned FileVer (unsigned(f.get()));
-	if(!Assert(FileVer <= FileVersion, String(TS"Newer or unkown version: "))+File) return;
+	if(!Assert(FileVer <= FileVersion, String(_T("Newer or unkown version: ")))+File) return;
 	String name; for(int c; c = f.get(); name += char(c));
-	if(!Assert(f.get() == 0, String(TS"Invalid format file: ")+File)) return;
+	if(!Assert(f.get() == 0, String(_T("Invalid format file: "))+File)) return;
 	try
 	{
 		Formats.push_back(new Format::ItemGroup(f, name));
 	}
 	catch(Format::ItemGroup *)
 	{
-		GenerateError("Unkown format element");
+		GenerateError(_T("Unkown format element"));
 	}
 }
-Format::ItemGroup::ItemGroup(std::ifstream &from, const String &nam) : Item(nam) //Deserialize
+Format::ItemGroup::ItemGroup(std::basic_ifstream<Char> &from, const String &nam) : Item(nam) //Deserialize
 {
 	String n;
 	int c;
 	items_t::size_type size;
-	from.read((char*)&size, sizeof(size));
+	from.read((Char*)&size, sizeof(size)/sizeof(Char));
 	for(items_t::size_type i = 0; i < size; ++i)
 	{
 		for(n.clear(); c = from.get(); n += char(c));
@@ -80,64 +80,64 @@ Format::ItemGroup::ItemGroup(std::ifstream &from, const String &nam) : Item(nam)
 void Extension::AddSubFormat(const Char *Name)
 {
 	Formats_t::iterator it = FindFormat(Name);
-	if(!Assert(it != Formats.end(), String(TS"No such format: ")+Name)) return;
+	if(!Assert(it != Formats.end(), String(_T("No such format: "))+Name)) return;
 	Format::ItemGroup *g = (*it)->Clone();
 	g->name = Name;
 	Formats.back()->items.push_back(g);
 }
 void Extension::AddByte(const Char *Name)
 {
-	if(!Assert(!Formats.empty(), TS"No format exists")) return;
+	if(!Assert(!Formats.empty(), _T("No format exists"))) return;
 	Formats.back()->items.push_back(new Format::Integer(Name, 1));
 }
 void Extension::AddShort(const Char *Name)
 {
-	if(!Assert(!Formats.empty(), TS"No format exists")) return;
+	if(!Assert(!Formats.empty(), _T("No format exists"))) return;
 	Formats.back()->items.push_back(new Format::Integer(Name, 2));
 }
 void Extension::AddInt(const Char *Name)
 {
-	if(!Assert(!Formats.empty(), TS"No format exists")) return;
+	if(!Assert(!Formats.empty(), _T("No format exists"))) return;
 	Formats.back()->items.push_back(new Format::Integer(Name));
 }
 void Extension::AddLong(const Char *Name)
 {
-	if(!Assert(!Formats.empty(), TS"No format exists")) return;
+	if(!Assert(!Formats.empty(), _T("No format exists"))) return;
 	Formats.back()->items.push_back(new Format::Integer(Name, 8));
 }
 void Extension::AddFloat(const Char *Name)
 {
-	if(!Assert(!Formats.empty(), TS"No format exists")) return;
+	if(!Assert(!Formats.empty(), _T("No format exists"))) return;
 	Formats.back()->items.push_back(new Format::Float(Name, false));
 }
 void Extension::AddDouble(const Char *Name)
 {
-	if(!Assert(!Formats.empty(), TS"No format exists")) return;
+	if(!Assert(!Formats.empty(), _T("No format exists"))) return;
 	Formats.back()->items.push_back(new Format::Float(Name));
 }
 void Extension::AddString(const Char *Name)
 {
-	if(!Assert(!Formats.empty(), TS"No format exists")) return;
+	if(!Assert(!Formats.empty(), _T("No format exists"))) return;
 	Formats.back()->items.push_back(new Format::Str(Name));
 }
 void Extension::AddRaw(const Char *Name)
 {
-	if(!Assert(!Formats.empty(), TS"No format exists")) return;
+	if(!Assert(!Formats.empty(), _T("No format exists"))) return;
 	Formats.back()->items.push_back(new Format::Raw(Name));
 }
 
 void Extension::TraverseFormat(const Char *Name, const Char *File)	//	//	//	//	//	//	//
 {
 	Formats_t::iterator it = FindFormat(Name);
-	if(!Assert(it != Formats.end(), String(TS"No such format: ")+Name)) return;
-	std::ofstream f (File, std::ios::out|std::ios::binary|std::ios::trunc);
-	if(!Assert(f.is_open(), String(TS"Failed to open: ")+File)) return;
+	if(!Assert(it != Formats.end(), String(_T("No such format: "))+Name)) return;
+	std::basic_ofstream<Char> f (File, std::ios::out|std::ios::binary|std::ios::trunc);
+	if(!Assert(f.is_open(), String(_T("Failed to open: "))+File)) return;
 	Mode = Serializing;
 	OfFormat.clear();
 	(*it)->Traverse(f, *this);
 	Mode = Neither;
 }
-void Format::ItemGroup::Traverse(std::ofstream &to, Extension &ext) const
+void Format::ItemGroup::Traverse(std::basic_ofstream<Char> &to, Extension &ext) const
 {
 	ext.FormatTimes = 1;
 	if(ext.OfFormat.length())
@@ -153,65 +153,65 @@ void Format::ItemGroup::Traverse(std::ofstream &to, Extension &ext) const
 			ext.OfFormat = name;
 			ext.ElemName = (*it)->name;
 			(*it)->Traverse(to, ext);
-			if(!ext.Assert(to.good(), String(TS"An error occured while writing the file after: ")+(*it)->name)) return;
+			if(!ext.Assert(to.good(), String(_T("An error occured while writing the file after: "))+(*it)->name)) return;
 		}
 	}
 }
-void Format::Integer::Traverse(std::ofstream &to, Extension &ext) const
+void Format::Integer::Traverse(std::basic_ofstream<Char> &to, Extension &ext) const
 {
 	if(size == 1)
 	{
 		ext.ByteValue = 0;
 		ext.Runtime.GenerateEvent(Extension::Trigger::Save::Byte);
-		to.write((char*)&ext.ByteValue, sizeof(ext.ByteValue));
+		to.write((Char*)&ext.ByteValue, sizeof(ext.ByteValue));
 	}
 	else if(size == 2)
 	{
 		ext.ShortValue = 0;
 		ext.Runtime.GenerateEvent(Extension::Trigger::Save::Short);
-		to.write((char*)&ext.ShortValue, sizeof(ext.ShortValue));
+		to.write((Char*)&ext.ShortValue, sizeof(ext.ShortValue)/sizeof(Char));
 	}
 	else if(size == 4)
 	{
 		ext.IntValue = 0;
 		ext.Runtime.GenerateEvent(Extension::Trigger::Save::Int);
-		to.write((char*)&ext.IntValue, sizeof(ext.IntValue));
+		to.write((Char*)&ext.IntValue, sizeof(ext.IntValue)/sizeof(Char));
 	}
 	else if(size == 8)
 	{
 		ext.LongValue = 0;
 		ext.Runtime.GenerateEvent(Extension::Trigger::Save::Long);
-		to.write((char*)&ext.LongValue, sizeof(ext.LongValue));
+		to.write((Char*)&ext.LongValue, sizeof(ext.LongValue)/sizeof(Char));
 	}
 	else
 	{
-		ext.GenerateError(TS"Unkown Size; not Byte, Short, Int, or Long");
+		ext.GenerateError(_T("Unkown Size; not Byte, Short, Int, or Long"));
 	}
 }
-void Format::Float::Traverse(std::ofstream &to, Extension &ext) const
+void Format::Float::Traverse(std::basic_ofstream<Char> &to, Extension &ext) const
 {
 	if(doub)
 	{
 		ext.DoubleValue = 0.0;
 		ext.Runtime.GenerateEvent(Extension::Trigger::Save::Double);
-		to.write((char*)&ext.DoubleValue, sizeof(ext.DoubleValue));
+		to.write((Char*)&ext.DoubleValue, sizeof(ext.DoubleValue)/sizeof(Char));
 	}
 	else
 	{
 		ext.FloatValue = 0.0;
 		ext.Runtime.GenerateEvent(Extension::Trigger::Save::Float);
-		to.write((char*)&ext.FloatValue, sizeof(ext.FloatValue));
+		to.write((Char*)&ext.FloatValue, sizeof(ext.FloatValue)/sizeof(Char));
 	}
 }
-void Format::Str::Traverse(std::ofstream &to, Extension &ext) const
+void Format::Str::Traverse(std::basic_ofstream<Char> &to, Extension &ext) const
 {
 	ext.NullT = true;
 	ext.StrValue.clear();
 	ext.Runtime.GenerateEvent(Extension::Trigger::Save::String);
 	to << ext.StrValue;
-	if(ext.NullT) to << ends;
+	if(ext.NullT) to << std::ends;
 }
-void Format::Raw::Traverse(std::ofstream &to, Extension &ext) const
+void Format::Raw::Traverse(std::basic_ofstream<Char> &to, Extension &ext) const
 {
 	ext.rawsize = 0;
 	ext.Runtime.GenerateEvent(Extension::Trigger::Save::Raw);
@@ -221,16 +221,16 @@ void Format::Raw::Traverse(std::ofstream &to, Extension &ext) const
 }
 void Extension::TraverseFile(const Char *File, const Char *Name)	//	//	//	//	//	//	//
 {
-	std::ifstream f (File, std::ios::in|std::ios::binary);
-	if(!Assert(f.is_open(), String(TS"Failed to open: ")+File)) return;
+	std::basic_ifstream<Char> f (File, std::ios::in|std::ios::binary);
+	if(!Assert(f.is_open(), String(_T("Failed to open: "))+File)) return;
 	Formats_t::iterator it = FindFormat(Name);
-	if(!Assert(it != Formats.end(), String(TS"No such format: ")+Name)) return;
+	if(!Assert(it != Formats.end(), String(_T("No such format: "))+Name)) return;
 	Mode = Deserializing;
 	OfFormat.clear();
 	(*it)->Traverse(f, *this);
 	Mode = Neither;
 }
-void Format::ItemGroup::Traverse(std::ifstream &from, Extension &ext) const
+void Format::ItemGroup::Traverse(std::basic_ifstream<Char> &from, Extension &ext) const
 {
 	ext.FormatTimes = 1;
 	if(ext.OfFormat.length())
@@ -246,51 +246,51 @@ void Format::ItemGroup::Traverse(std::ifstream &from, Extension &ext) const
 			ext.OfFormat = name;
 			ext.ElemName = (*it)->name;
 			(*it)->Traverse(from, ext);
-			if(!ext.Assert(from.good(), String(TS"An error occured while reading the file after: ")+(*it)->name)) return;
+			if(!ext.Assert(from.good(), String(_T("An error occured while reading the file after: "))+(*it)->name)) return;
 		}
 	}
 }
-void Format::Integer::Traverse(std::ifstream &from, Extension &ext) const
+void Format::Integer::Traverse(std::basic_ifstream<Char> &from, Extension &ext) const
 {
 	if(size == 1)
 	{
-		from.read((char*)&ext.ByteValue, sizeof(ext.ByteValue));
+		from.read((Char*)&ext.ByteValue, sizeof(ext.ByteValue));
 		ext.Runtime.GenerateEvent(Extension::Trigger::Load::Byte);
 	}
 	else if(size == 2)
 	{
-		from.read((char*)&ext.ShortValue, sizeof(ext.ShortValue));
+		from.read((Char*)&ext.ShortValue, sizeof(ext.ShortValue)/sizeof(Char));
 		ext.Runtime.GenerateEvent(Extension::Trigger::Load::Short);
 	}
 	else if(size == 4)
 	{
-		from.read((char*)&ext.IntValue, sizeof(ext.IntValue));
+		from.read((Char*)&ext.IntValue, sizeof(ext.IntValue)/sizeof(Char));
 		ext.Runtime.GenerateEvent(Extension::Trigger::Load::Int);
 	}
 	else if(size == 8)
 	{
-		from.read((char*)&ext.LongValue, sizeof(ext.LongValue));
+		from.read((Char*)&ext.LongValue, sizeof(ext.LongValue)/sizeof(Char));
 		ext.Runtime.GenerateEvent(Extension::Trigger::Load::Long);
 	}
 	else
 	{
-		ext.GenerateError(TS"Unkown Size; not Byte, Short, Int, or Long");
+		ext.GenerateError(_T("Unkown Size; not Byte, Short, Int, or Long"));
 	}
 }
-void Format::Float::Traverse(std::ifstream &from, Extension &ext) const
+void Format::Float::Traverse(std::basic_ifstream<Char> &from, Extension &ext) const
 {
 	if(doub)
 	{
-		from.read((char*)&ext.DoubleValue, sizeof(ext.DoubleValue));
+		from.read((Char*)&ext.DoubleValue, sizeof(ext.DoubleValue)/sizeof(Char));
 		ext.Runtime.GenerateEvent(Extension::Trigger::Load::Double);
 	}
 	else
 	{
-		from.read((char*)&ext.FloatValue, sizeof(ext.FloatValue));
+		from.read((Char*)&ext.FloatValue, sizeof(ext.FloatValue)/sizeof(Char));
 		ext.Runtime.GenerateEvent(Extension::Trigger::Load::Float);
 	}
 }
-void Format::Str::Traverse(std::ifstream &from, Extension &ext) const
+void Format::Str::Traverse(std::basic_ifstream<Char> &from, Extension &ext) const
 {
 	ext.NullT = true;
 	ext.StrValue.clear();
@@ -298,7 +298,7 @@ void Format::Str::Traverse(std::ifstream &from, Extension &ext) const
 	ext.Runtime.GenerateEvent(Extension::Trigger::Load::String); //to allow for changing from null terminated to length terminated
 	ext.lfrom = 0;
 }
-void Format::Raw::Traverse(std::ifstream &from, Extension &ext) const
+void Format::Raw::Traverse(std::basic_ifstream<Char> &from, Extension &ext) const
 {
 	ext.rawsize = 0;
 	ext.lfrom = &from;
@@ -345,7 +345,7 @@ void Extension::SetStringSize(int size)
 {
 	NullT = false;
 	StrValue.clear();
-	StrValue.resize(size, '\0');
+	StrValue.resize(size, _T('\0'));
 }
 void Extension::SetRawSize(int size)
 {

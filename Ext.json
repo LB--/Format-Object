@@ -3,7 +3,7 @@
 	{
 		"Name": "Format Object",
 		"Author": "LB",
-		"Copyright": "Copyright © 2012 LB-Stuff",
+		"Copyright": "Copyright © 2014 LB-Stuff",
 		"Comment": "The Format Object does not format hard drives. Instead it is much more useful in the sense that it allows you to define customized file formats, and then use them to save and load information in any format.\n\nThanks goes to mojofltr for the excellent icon.",
 		"URL": "http://www.LB-Stuff.com/",
 		"Help": "Help/Format Object/Format Object.chm",
@@ -293,10 +293,6 @@
 	"Conditions":
 	[
 		{	"Title": "%o: On Error",
-
-			"Parameters":
-			[
-			],
 
 			"Triggered": true
 		},

@@ -32,18 +32,18 @@ public:
 	String ElemName; //The name of the current element
 	union
 	{
-		unsigned FormatTimes;	//Number of times to loop a format (if SubFormat)
-		char ByteValue;			//The value to use (if Integer)
-		short ShortValue;		//The value to use (if Integer)
-		int IntValue;			//The value to use (if Integer)
-		long long LongValue;	//The value to use (if Integer)
-		float FloatValue;		//The value to use (if Float)
-		double DoubleValue;		//The value to use (if Float)
-		bool NullT;				//Whether to use a null terminator (if Str)
-	};	String StrValue;		//The String to use (if Str)
-	std::ifstream *lfrom;		//For loading (if Str)
-	char *rawdata;				//For raw data (if Raw)
-	unsigned rawsize;			//For raw data (if Raw)
+		unsigned FormatTimes;         //Number of times to loop a format (if SubFormat)
+		char ByteValue;               //The value to use (if Integer)
+		short ShortValue;             //The value to use (if Integer)
+		int IntValue;                 //The value to use (if Integer)
+		long long LongValue;          //The value to use (if Integer)
+		float FloatValue;             //The value to use (if Float)
+		double DoubleValue;           //The value to use (if Float)
+		bool NullT;                   //Whether to use a null terminator (if Str)
+	};	String StrValue;              //The String to use (if Str)
+	std::basic_ifstream<Char> *lfrom; //For loading (if Str)
+	Char *rawdata;                    //For raw data (if Raw)
+	unsigned rawsize;                 //For raw data (if Raw)
 
 	struct Trigger //holds enums for triggerable condition IDs
 	{

@@ -17,7 +17,7 @@ namespace Format
 		virtual Item *Clone() const = 0;
 		virtual unsigned Type() const = 0;
 
-		virtual std::ofstream &Serialize(std::ofstream &to) const
+		virtual std::basic_ofstream<Char> &Serialize(std::basic_ofstream<Char> &to) const
 		{
 			return to << name << std::ends << char(Type()), to;
 		}
@@ -29,8 +29,8 @@ namespace Format
 			if(!WriteFile(File, &type, sizeof(type), &written, 0) || written != sizeof(type)) return 0;
 			return File;
 		}
-		virtual void Traverse(std::ofstream &to, Extension &ext) const = 0;
-		virtual void Traverse(std::ifstream &from, Extension &ext) const = 0;
+		virtual void Traverse(std::basic_ofstream<Char> &to, Extension &ext) const = 0;
+		virtual void Traverse(std::basic_ifstream<Char> &from, Extension &ext) const = 0;
 
 		virtual ~Item(){}
 	private:
@@ -51,10 +51,10 @@ namespace Format
 		static unsigned const TypeID = 0;
 		virtual unsigned Type() const { return TypeID; }
 
-		virtual std::ofstream &Serialize(std::ofstream &to) const
+		virtual std::basic_ofstream<Char> &Serialize(std::basic_ofstream<Char> &to) const
 		{
 			items_t::size_type size = items.size();
-			Item::Serialize(to).write((char*)&size, sizeof(size));
+			Item::Serialize(to).write((Char*)&size, sizeof(size)/sizeof(Char));
 			for(items_t::const_iterator it = items.begin(); it != items.end(); ++it)
 			{
 				(*it)->Serialize(to);
@@ -73,10 +73,10 @@ namespace Format
 			}
 			return File;
 		}
-		ItemGroup(std::ifstream &from, const String &nam); //Deserialize
+		ItemGroup(std::basic_ifstream<Char> &from, const String &nam); //Deserialize
 		ItemGroup(HANDLE File, const String &nam); //Deserialize
-		virtual void Traverse(std::ofstream &to, Extension &ext) const;
-		virtual void Traverse(std::ifstream &from, Extension &ext) const;
+		virtual void Traverse(std::basic_ofstream<Char> &to, Extension &ext) const;
+		virtual void Traverse(std::basic_ifstream<Char> &from, Extension &ext) const;
 
 		virtual ~ItemGroup()
 		{
@@ -111,9 +111,9 @@ namespace Format
 		static unsigned const TypeID = 1;
 		virtual unsigned Type() const { return TypeID; }
 
-		virtual std::ofstream &Serialize(std::ofstream &to) const
+		virtual std::basic_ofstream<Char> &Serialize(std::basic_ofstream<Char> &to) const
 		{
-			return Item::Serialize(to).write((char*)&size, sizeof(size)), to;
+			return Item::Serialize(to).write((Char*)&size, sizeof(size)/sizeof(Char)), to;
 		}
 		virtual HANDLE Serialize(HANDLE File) const
 		{
@@ -122,17 +122,17 @@ namespace Format
 			if(!WriteFile(File, &size, sizeof(size), &written, 0) || written != sizeof(size)) return 0;
 			return File;
 		}
-		Integer(std::ifstream &from, const String &n) : Item(n) //Deserialize
+		Integer(std::basic_ifstream<Char> &from, const String &n) : Item(n) //Deserialize
 		{
-			from.read((char*)&size, sizeof(size));
+			from.read((Char*)&size, sizeof(size)/sizeof(Char));
 		}
 		Integer(HANDLE File, const String &n) : Item(n) //Deserialize
 		{
 			unsigned long written;
 			if(!ReadFile(File, &size, sizeof(size), &written, 0) || written != sizeof(size)) throw this;
 		}
-		virtual void Traverse(std::ofstream &to, Extension &ext) const;
-		virtual void Traverse(std::ifstream &from, Extension &ext) const;
+		virtual void Traverse(std::basic_ofstream<Char> &to, Extension &ext) const;
+		virtual void Traverse(std::basic_ifstream<Char> &from, Extension &ext) const;
 
 		virtual ~Integer(){}
 	private:
@@ -152,7 +152,7 @@ namespace Format
 		static unsigned const TypeID = 2;
 		virtual unsigned Type() const { return TypeID; }
 
-		virtual std::ofstream &Serialize(std::ofstream &to) const
+		virtual std::basic_ofstream<Char> &Serialize(std::basic_ofstream<Char> &to) const
 		{
 			return Item::Serialize(to) << char(doub), to;
 		}
@@ -164,10 +164,10 @@ namespace Format
 			if(!WriteFile(File, &d, sizeof(d), &written, 0) || written != sizeof(d)) return 0;
 			return File;
 		}
-		Float(std::ifstream &from, const String &n) : Item(n) //Deserialize
+		Float(std::basic_ifstream<Char> &from, const String &n) : Item(n) //Deserialize
 		{
-			char d;
-			from.read(&d, sizeof(d));
+			Char d;
+			from.read(&d, sizeof(d)/sizeof(Char));
 			doub = d?true:false;
 		}
 		Float(HANDLE File, const String &n) : Item(n) //Deserialize
@@ -177,8 +177,8 @@ namespace Format
 			if(!ReadFile(File, &d, sizeof(d), &written, 0) || written != sizeof(d)) throw this;
 			doub = d?true:false;
 		}
-		virtual void Traverse(std::ofstream &to, Extension &ext) const;
-		virtual void Traverse(std::ifstream &from, Extension &ext) const;
+		virtual void Traverse(std::basic_ofstream<Char> &to, Extension &ext) const;
+		virtual void Traverse(std::basic_ifstream<Char> &from, Extension &ext) const;
 
 		virtual ~Float(){}
 	private:
@@ -198,7 +198,7 @@ namespace Format
 		static unsigned const TypeID = 3;
 		virtual unsigned Type() const { return TypeID; }
 
-		virtual std::ofstream &Serialize(std::ofstream &to) const
+		virtual std::basic_ofstream<Char> &Serialize(std::basic_ofstream<Char> &to) const
 		{
 			return Item::Serialize(to) << char(unicode), to;
 		}
@@ -210,10 +210,10 @@ namespace Format
 			if(!WriteFile(File, &u, sizeof(u), &written, 0) || written != sizeof(u)) return 0;
 			return File;
 		}
-		Str(std::ifstream &from, const String &n) : Item(n) //Deserialize
+		Str(std::basic_ifstream<Char> &from, const String &n) : Item(n) //Deserialize
 		{
-			char u;
-			from.read(&u, sizeof(u));
+			Char u;
+			from.read(&u, sizeof(u)/sizeof(Char));
 			unicode = u?true:false;
 		}
 		Str(HANDLE File, const String &n) : Item(n) //Deserialize
@@ -223,8 +223,8 @@ namespace Format
 			if(!ReadFile(File, &u, sizeof(u), &written, 0) || written != sizeof(u)) throw this;
 			unicode = u?true:false;
 		}
-		virtual void Traverse(std::ofstream &to, Extension &ext) const;
-		virtual void Traverse(std::ifstream &from, Extension &ext) const;
+		virtual void Traverse(std::basic_ofstream<Char> &to, Extension &ext) const;
+		virtual void Traverse(std::basic_ifstream<Char> &from, Extension &ext) const;
 
 		virtual ~Str(){}
 	private:
@@ -244,14 +244,14 @@ namespace Format
 		virtual unsigned Type() const { return TypeID; }
 
 		using Item::Serialize; //both overloads
-		Raw(std::ifstream &from, const String &n) : Item(n) //Deserialize
+		Raw(std::basic_ifstream<Char> &from, const String &n) : Item(n) //Deserialize
 		{
 		}
 		Raw(HANDLE File, const String &n) : Item(n) //Deserialize
 		{
 		}
-		virtual void Traverse(std::ofstream &to, Extension &ext) const;
-		virtual void Traverse(std::ifstream &from, Extension &ext) const;
+		virtual void Traverse(std::basic_ofstream<Char> &to, Extension &ext) const;
+		virtual void Traverse(std::basic_ifstream<Char> &from, Extension &ext) const;
 
 		virtual ~Raw(){}
 	private:
